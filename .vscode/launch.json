@@ -1,0 +1,20 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // For the Cortex-Debug extension
+            "type": "cortex-debug",
+            "servertype": "openocd",
+            "request": "launch",
+            "name": "Debug - ST-Link",
+            "executable": "${workspaceRoot}/build/EC20103RB.elf",
+            "configFiles": [
+                "C:/Program Files/OpenOCD/0.10.0-13/scripts/interface/stlink-v2.cfg",
+                "C:/Program Files/OpenOCD/0.10.0-13/scripts/target/stm32f1x_stlink.cfg",
+            ],
+            "cwd": "${workspaceRoot}"
+        }
+    ]
+}
