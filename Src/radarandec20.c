@@ -10,15 +10,15 @@ GSM_init GSMinit;
 unsigned char CloudtriggerFlag=0;
 unsigned int  CloudtriggerTime=0;
 //EC20
-unsigned short PollTimeCnt=0;                  //ÔÚºÁÃëÖĞ¶ÏÖĞ¼Ó¼Ó
-unsigned char RxBufferDMA[DMARXBUFFERSIZE];    // DMA½ÓÊÕµ½µÄ»º´æ
-unsigned short DMARxLenU2=0;                   //DMA»º´æ½ÓÊÕ³¤¶È
-unsigned char rsRxBuf[LASTSZIE];              //×îºóµÄÊı¾İ
-unsigned int rsRxIndexLen=0;                 //Õâ¸ö³¤¶È»áÔÚDMA¿ÕÏĞÖĞ¶ÏÖĞ¸üĞÂ
-unsigned int rsRxLen=0;                      //×îÖÕ³¤¶È
-unsigned int rsRxTime=0;                     //³¬Ê±Ê±¼ä¼ÆÊı
-unsigned char rsPackFlag=0;                   //ÕıÔÚ½ÓÊÕµÄ±ê¼Ç
-unsigned char rsRecFlag=0;                    //½ÓÊÕ±êÖ¾
+unsigned short PollTimeCnt=0;                  //åœ¨æ¯«ç§’ä¸­æ–­ä¸­åŠ åŠ 
+unsigned char RxBufferDMA[DMARXBUFFERSIZE];    // DMAæ¥æ”¶åˆ°çš„ç¼“å­˜
+unsigned short DMARxLenU2=0;                   //DMAç¼“å­˜æ¥æ”¶é•¿åº¦
+unsigned char rsRxBuf[LASTSZIE];              //æœ€åçš„æ•°æ®
+unsigned int rsRxIndexLen=0;                 //è¿™ä¸ªé•¿åº¦ä¼šåœ¨DMAç©ºé—²ä¸­æ–­ä¸­æ›´æ–°
+unsigned int rsRxLen=0;                      //æœ€ç»ˆé•¿åº¦
+unsigned int rsRxTime=0;                     //è¶…æ—¶æ—¶é—´è®¡æ•°
+unsigned char rsPackFlag=0;                   //æ­£åœ¨æ¥æ”¶çš„æ ‡è®°
+unsigned char rsRecFlag=0;                    //æ¥æ”¶æ ‡å¿—
 unsigned char ProSta=0;
 unsigned char linkflagSta=0;
 unsigned char CurStaSendCnt=0;
@@ -53,77 +53,77 @@ unsigned char linkflag=0;
 unsigned char sendingflag=0;
 unsigned int simCnt=0;
 const unsigned char *psend;
-GPIO_PinState readsxtioflag=GPIO_PIN_RESET;//ÉãÏñÍ·´¥·¢×´Ì¬
+GPIO_PinState readsxtioflag=GPIO_PIN_RESET;//æ‘„åƒå¤´è§¦å‘çŠ¶æ€
 unsigned int POLLTime=NORMARLTIME;
 
-#define InitEC2Index                            0       //´ÓÍ·¿ªÊ¼³õÊ¼»¯
-#define InitTCPIndex                            6       //´ÓÁ¬½ÓTCP¿ªÊ¼³õÊ¼»¯
-#define ATCodeSnd                               11      //·¢ËÍTCPÄÚÈİµÄÄÇÌõATÖ¸ÁîĞòºÅ
-#define ATTcpReadIndex                          12      //TCP¶ÁÈ¡µÄATÖ¸ÁîĞòºÅĞòºÅ
-#define ATCodeLastNum                           12      //×îºóÒ»Ìõ¶ÁÈ¡GPSÊı¾İµÄATÖ¸ÁîĞòºÅ  15
-#define ATCodeNum                               12      //Õû¸öÁ÷³ÌATÖ¸ÁîÌõÊı 16
-#define SendButNoRecCnt                         50      //·¢ËÍµ«ÊÇEC20Ã»ÓĞÏìÓ¦
-#define SendRecButNotExpCnt                     10      //·¢ËÍEC20ÓĞÏìÓ¦µ«ÊÇ½ÓÊÕµ½Êı¾İ¸úÔ¤ÆÚÄÚÈİ²»·ûºÏ
-#define SendRecButGpsNotExp                     3       //gpsÊı¾İ²»ÔÚÔ¤ÆÚ·¶Î§µÄ¼ÆÊı
-//·¢ËÍÁĞ±í
+#define InitEC2Index                            0       //ä»å¤´å¼€å§‹åˆå§‹åŒ–
+#define InitTCPIndex                            6       //ä»è¿æ¥TCPå¼€å§‹åˆå§‹åŒ–
+#define ATCodeSnd                               11      //å‘é€TCPå†…å®¹çš„é‚£æ¡ATæŒ‡ä»¤åºå·
+#define ATTcpReadIndex                          12      //TCPè¯»å–çš„ATæŒ‡ä»¤åºå·åºå·
+#define ATCodeLastNum                           12      //æœ€åä¸€æ¡è¯»å–GPSæ•°æ®çš„ATæŒ‡ä»¤åºå·  15
+#define ATCodeNum                               12      //æ•´ä¸ªæµç¨‹ATæŒ‡ä»¤æ¡æ•° 16
+#define SendButNoRecCnt                         50      //å‘é€ä½†æ˜¯EC20æ²¡æœ‰å“åº”
+#define SendRecButNotExpCnt                     10      //å‘é€EC20æœ‰å“åº”ä½†æ˜¯æ¥æ”¶åˆ°æ•°æ®è·Ÿé¢„æœŸå†…å®¹ä¸ç¬¦åˆ
+#define SendRecButGpsNotExp                     3       //gpsæ•°æ®ä¸åœ¨é¢„æœŸèŒƒå›´çš„è®¡æ•°
+//å‘é€åˆ—è¡¨
 const unsigned char   *SendList[] = {
   "AT\r\n\0",                                           //0       
-  "ATE0\r\n\0",                                         //1  »ØÏÔ¹Ø±Õ
-  "AT+CPIN?\r\n\0",                                     //2 ¶Á¿¨²âÊÔ
-  "AT+CSQ\r\n\0",                                       //3 ĞÅºÅÖÊÁ¿²éÑ¯
-  "AT+CREG?\r\n\0",                                     //4 ÍøÂç×¢²á²éÑ¯
-  "AT+CGATT?\r\n\0",                                    //5 ¸½×ÅÍøÂç²éÑ¯
-  "AT+QIACT=1\r\n",                                     //6 ¼¤»îÒÆ¶¯³¡¾° ¼¤»î context profile
-  "AT+QIACT?\r\n\0",                                    //7 IPµØÖ·²éÑ¯   QIACT: 1,1,1,"10.23.163.28"  µÚÒ»¸ö1contextºÅ£¨1-16£©  0-1Á¬½ÓºÅ 1
+  "ATE0\r\n\0",                                         //1  å›æ˜¾å…³é—­
+  "AT+CPIN?\r\n\0",                                     //2 è¯»å¡æµ‹è¯•
+  "AT+CSQ\r\n\0",                                       //3 ä¿¡å·è´¨é‡æŸ¥è¯¢
+  "AT+CREG?\r\n\0",                                     //4 ç½‘ç»œæ³¨å†ŒæŸ¥è¯¢
+  "AT+CGATT?\r\n\0",                                    //5 é™„ç€ç½‘ç»œæŸ¥è¯¢
+  "AT+QIACT=1\r\n",                                     //6 æ¿€æ´»ç§»åŠ¨åœºæ™¯ æ¿€æ´» context profile
+  "AT+QIACT?\r\n\0",                                    //7 IPåœ°å€æŸ¥è¯¢   QIACT: 1,1,1,"10.23.163.28"  ç¬¬ä¸€ä¸ª1contextå·ï¼ˆ1-16ï¼‰  0-1è¿æ¥å· 1
   "AT+QIDEACT=1\r\n\0",                                 //8  Deactivate a PDP Context
-  "AT+QICLOSE=0,2000\r\n\0",                            //9 ¹Ø±Õconnect 0 ²»¹ÜÔõÑùÏÈ¹Ø±ÕÒ»ÏÂ
+  "AT+QICLOSE=0,2000\r\n\0",                            //9 å…³é—­connect 0 ä¸ç®¡æ€æ ·å…ˆå…³é—­ä¸€ä¸‹
 #if FacIP==0
-  "AT+QIOPEN=1,0,\"TCP\",\"139.198.162.94\",999\r\n\0",    //10 Á¬½Ócontext 1ºÅ   connect0ºÅ TCP ip¼°¶Ë¿Ú47.103.104.119   47.97.25.70
+  "AT+QIOPEN=1,0,\"TCP\",\"139.198.162.95\",999\r\n\0",    //10 è¿æ¥context 1å·   connect0å· TCP ipåŠç«¯å£47.103.104.119   47.97.25.70
 #else
-  "AT+QIOPEN=1,0,\"TCP\",\"47.103.104.119\",999\r\n\0", //10 Á¬½Ócontext 1ºÅ   connect0ºÅ TCP ip¼°¶Ë¿Ú47.103.104.119   47.97.25.70
+  "AT+QIOPEN=1,0,\"TCP\",\"47.103.104.120\",999\r\n\0", //10 è¿æ¥context 1å·   connect0å· TCP ipåŠç«¯å£47.103.104.119   47.97.25.70
 #endif
-  "AT+QISENDEX=0,\"313233343536373839\"\r\n\0",         //11 ·¢ËÍÊı¾İ
-  "AT+QIRD=0,1500\r\n\0",                               //12  ½ÓÊÕ
-  "AT+QGPSCFG=\"outport\",\"uartdebug\"\r\n\0",         //13  ÉèÖÃgnssµÄ¶Ë¿Ú----------------------------------------
-  "AT+QGPS=1\r\n\0",                                    //14¿ªÆôGNNS¹¦ÄÜ   Ê¹ÓÃ´®¿Ú·¢ËÍ 
-  "AT+QGPSLOC=0\r\n\0",                                 //15¶ÁÈ¡Î»ÖÃĞÅÏ¢·¢ËÍ
+  "AT+QISENDEX=0,\"313233343536373839\"\r\n\0",         //11 å‘é€æ•°æ®
+  "AT+QIRD=0,1500\r\n\0",                               //12  æ¥æ”¶
+  "AT+QGPSCFG=\"outport\",\"uartdebug\"\r\n\0",         //13  è®¾ç½®gnssçš„ç«¯å£----------------------------------------
+  "AT+QGPS=1\r\n\0",                                    //14å¼€å¯GNNSåŠŸèƒ½   ä½¿ç”¨ä¸²å£å‘é€ 
+  "AT+QGPSLOC=0\r\n\0",                                 //15è¯»å–ä½ç½®ä¿¡æ¯å‘é€
   
 };
 
 
-//½ÓÊÕÆÚ´ıÁĞ±í
+//æ¥æ”¶æœŸå¾…åˆ—è¡¨
 const unsigned char   *RecExpected [] = {
   "OK",         //0     OK
   "OK",         //1     OK
-  "READY",      //2     +CPIN: READY   Èç¹ûÁ½´ÎERROR
+  "READY",      //2     +CPIN: READY   å¦‚æœä¸¤æ¬¡ERROR
   "CSQ",        //3     +CSQ: 28,0   
-  "0,1",         //4     +CREG: 0,1   0,5   1,1  1,5 ÕâĞ©¶¼¿ÉÒÔ
+  "0,1",         //4     +CREG: 0,1   0,5   1,1  1,5 è¿™äº›éƒ½å¯ä»¥
   "1",          //5     +CGATT: 1
-  "O",          //6     OK »òÕß ERROR ÖØ¸´¼¤»îÎªERROR
+  "O",          //6     OK æˆ–è€… ERROR é‡å¤æ¿€æ´»ä¸ºERROR
   "OK",         //7     OK
   "OK",         //8     OK
   "\r",         //9     OK
   "\r",         //10    
-  "OK",         //11    ·¢ËÍ
-  "+QIRD",      //12    ½ÓÊÕ
+  "OK",         //11    å‘é€
+  "+QIRD",      //12    æ¥æ”¶
   "\r",         //13     
   "\r",         //14
   "QGPSLOC",        //15   
   "ERROR"
 };
 
-//Çå³ı»º´æ
-void Clear_Buffer(void)//Çå¿Õ»º´æ
+//æ¸…é™¤ç¼“å­˜
+void Clear_Buffer(void)//æ¸…ç©ºç¼“å­˜
 {
   int i;
   for(i=0;i<LASTSZIE;i++)
   {
-    rsRxBuf[i]=0;//»º´æ
+    rsRxBuf[i]=0;//ç¼“å­˜
   }
   rsRxLen=0;
   
 }
-//È«²¿ÏàÍ¬·µ»Ø1
+//å…¨éƒ¨ç›¸åŒè¿”å›1
 unsigned char ucharCmp(unsigned char *p1,unsigned char *p2,unsigned char len)
 {
   unsigned char i;
@@ -134,10 +134,10 @@ unsigned char ucharCmp(unsigned char *p1,unsigned char *p2,unsigned char len)
       return 0;
     }
   }
-  return 1;//È«²¿ÏàµÈ
+  return 1;//å…¨éƒ¨ç›¸ç­‰
 }
 
-//Õâ²¿·ÖÍêÈ«°üº¬ÔÚÕû¸öÖĞ¾Í·µ»Ø1 ²»È»·µ»ØÁã
+//è¿™éƒ¨åˆ†å®Œå…¨åŒ…å«åœ¨æ•´ä¸ªä¸­å°±è¿”å›1 ä¸ç„¶è¿”å›é›¶
 unsigned char findStrCmp(unsigned char *allPstr,unsigned char alllen,unsigned char *partPstr, unsigned char partlen)
 {
   unsigned char i=0;
@@ -145,13 +145,13 @@ unsigned char findStrCmp(unsigned char *allPstr,unsigned char alllen,unsigned ch
   {
     if(ucharCmp(allPstr+i,partPstr,partlen)==1)
     {
-      return 1;//ÕÒµ½ÍêÈ«ÏàÍ¬
+      return 1;//æ‰¾åˆ°å®Œå…¨ç›¸åŒ
     }
   }
   return 0;
 }
                
-//AT·¢ËÍTCPÊı¾İÊ±ºòĞèÒª±àÂëÒ»ÏÂ
+//ATå‘é€TCPæ•°æ®æ—¶å€™éœ€è¦ç¼–ç ä¸€ä¸‹
 void HexStrConvert(unsigned char *Inp,unsigned char len,unsigned char *Outp)
 {
   unsigned char hexH=0;
@@ -171,20 +171,20 @@ void HexStrConvert(unsigned char *Inp,unsigned char len,unsigned char *Outp)
     *Outp++=hexL;
   }
 }
-//ÑÓÊ± Õâ¸öº¯ÊıĞèÒª°Ñ±àÒëÓÅ»¯¸Ä³ÉNONE²ÅĞĞ
+//å»¶æ—¶ è¿™ä¸ªå‡½æ•°éœ€è¦æŠŠç¼–è¯‘ä¼˜åŒ–æ”¹æˆNONEæ‰è¡Œ
 void delay_ms(unsigned int n)
 {
   msint=0;
   while(n>msint);
 }
 
-//¿ª¹ØEC20µÄµçÔ´Á¬×ÅÈı¼«¹Ü¿ØÖÆ¿ª¹ØµçÔ´ 
+//å¼€å…³EC20çš„ç”µæºè¿ç€ä¸‰æç®¡æ§åˆ¶å¼€å…³ç”µæº 
 void ec20power(unsigned char onoffflag)
 {
   rstHig;
   powerHig;
   
-  if(onoffflag)//¿ª
+  if(onoffflag)//å¼€
   {
     powerLow;
     delay_oledms(500);
@@ -198,10 +198,10 @@ void ec20power(unsigned char onoffflag)
 }
   char txb[20];
 
-//»ñÈ¡Î¨Ò»ID
+//è·å–å”¯ä¸€ID
 unsigned int GetIDCode(void)
 {
-  //»ñÈ¡CPUÎ¨Ò»ID
+  //è·å–CPUå”¯ä¸€ID
 #if 0//stm32f407
   CpuID[0]=*(unsigned int *)(0x1fff7a10);
   CpuID[1]=*(unsigned int *)(0x1fff7a14);
@@ -240,7 +240,7 @@ void DataSendPre(void)
     ec20send.Radar2_Cnt=lifetime_count[1];
     ec20send.Radar3_Cnt=lifetime_count[2];
     ec20send.Radar4_Cnt=lifetime_count[3];
-    ec20send.Radar1_Warm=warmSend[0];//±¨¾¯
+    ec20send.Radar1_Warm=warmSend[0];//æŠ¥è­¦
     ec20send.Radar2_Warm=warmSend[1];
     ec20send.Radar3_Warm=warmSend[2];
     ec20send.Radar4_Warm=warmSend[3];
@@ -251,7 +251,7 @@ void DataSendPre(void)
     ec20send.Alarm_Cnt=cnt; 
     ec20send.Alarm_Enable=warmnobeep;
     ec20send.GPS_State=GPSStatFlag;
-    if(GpsRecFlag==0)//Î´Ôø½ÓÊÜµ½gpsÊı¾İ
+    if(GpsRecFlag==0)//æœªæ›¾æ¥å—åˆ°gpsæ•°æ®
     {
       memcpy((char *)&(pec20->Time[0]),"000000.000",10);
       memcpy((char *)&(pec20->Latitude[0]),"0000.0000N",10);
@@ -268,8 +268,8 @@ void DataSendPre(void)
     i=i+strlen("AT+QISENDEX=0,\"\0");
     HexStrConvert((unsigned char *)&ec20send,sizeof(Ec20SendData),&sendbuf[i]);
     i=i+sizeof(Ec20SendData)*2;
-    sprintf((char *)&sendbuf[i],"\"\r\n\0");//3×Ö½Ú
-    HAL_UART_Transmit(&huart2,sendbuf,2*sizeof(Ec20SendData)+18,800);//69*2+18=156Ò»¹²·¢ËÍ156×Ö½Ú
+    sprintf((char *)&sendbuf[i],"\"\r\n\0");//3å­—èŠ‚
+    HAL_UART_Transmit(&huart2,sendbuf,2*sizeof(Ec20SendData)+18,800);//69*2+18=156ä¸€å…±å‘é€156å­—èŠ‚
           
   }else
   {
@@ -280,45 +280,45 @@ void DataSendPre(void)
     i=i+strlen("AT+QISENDEX=0,\"\0");
     HexStrConvert((unsigned char *)&ec20heart,sizeof(Ec20HEART),&sendbuf[i]);
     i=i+sizeof(Ec20HEART)*2;
-    sprintf((char *)&sendbuf[i],"\"\r\n\0");//3×Ö½Ú
-    HAL_UART_Transmit(&huart2,sendbuf,2*sizeof(Ec20HEART)+18,800);//69*2+18=156Ò»¹²·¢ËÍ156×Ö½Ú
+    sprintf((char *)&sendbuf[i],"\"\r\n\0");//3å­—èŠ‚
+    HAL_UART_Transmit(&huart2,sendbuf,2*sizeof(Ec20HEART)+18,800);//69*2+18=156ä¸€å…±å‘é€156å­—èŠ‚
   }
   
 }
 unsigned char sendedflag=0;
 unsigned char warmonceflag=0;
-//·¢ËÍ½ø³Ìsendingflag=0;//·¢ËÍºÃÁË
+//å‘é€è¿›ç¨‹sendingflag=0;//å‘é€å¥½äº†
 //radar
 void ec20ProcessFun(void)
 {
  
   char numstr[3];
   unsigned short i=0;
-  //½ÓÊÕ
-  if(rsPackFlag==1&&rsRxTime>50)//¶Ï°ü ·ÀÖ¹ÓĞĞ©ÉÏÎ»»úÈí¼ş·¢ËÍÊı¾İ²»Á¬Ğø
+  //æ¥æ”¶
+  if(rsPackFlag==1&&rsRxTime>50)//æ–­åŒ… é˜²æ­¢æœ‰äº›ä¸Šä½æœºè½¯ä»¶å‘é€æ•°æ®ä¸è¿ç»­
   {
     rsPackFlag=0;
     rsRxTime=0;
     rsRxLen=rsRxIndexLen;
-    rsRxBuf[rsRxLen]=0;//ÎªÁË´òÓ¡Ê±ºò±£ÏÕÆğ¼ûÊÖ¶¯ÔÚÄ©Î²×·¼ÓÒ»¸öÁã
+    rsRxBuf[rsRxLen]=0;//ä¸ºäº†æ‰“å°æ—¶å€™ä¿é™©èµ·è§æ‰‹åŠ¨åœ¨æœ«å°¾è¿½åŠ ä¸€ä¸ªé›¶
     rsRxIndexLen=0;
     rsRecFlag=1;
     
-    //COM_Get_Callback(GSMinit.status,rsRxBuf,rsRxLen);//×´Ì¬¡¢½ÓÊÕÊı¾İ¡¢½ÓÊÕÊı¾İµÄ³¤¶È
-    HAL_UART_Receive_DMA(&huart2, RxBufferDMA, DMARXBUFFERSIZE); //ÔÙ´Î¿ªÆôDMA½ÓÊÕ
+    //COM_Get_Callback(GSMinit.status,rsRxBuf,rsRxLen);//çŠ¶æ€ã€æ¥æ”¶æ•°æ®ã€æ¥æ”¶æ•°æ®çš„é•¿åº¦
+    HAL_UART_Receive_DMA(&huart2, RxBufferDMA, DMARXBUFFERSIZE); //å†æ¬¡å¼€å¯DMAæ¥æ”¶
   }
   
   if(ProSta<InitTCPIndex)
   {
-    POLLTime=ALARMTIME;//Î´Á¬½ÓTCPÇ°¿ÉÒÔÒÔ±¨¾¯ËÙ¶È½øĞĞ
+    POLLTime=ALARMTIME;//æœªè¿æ¥TCPå‰å¯ä»¥ä»¥æŠ¥è­¦é€Ÿåº¦è¿›è¡Œ
   }else
   {
     
-    if(warmonceflag==0)//´ÓÎ´±¨¾¯
+    if(warmonceflag==0)//ä»æœªæŠ¥è­¦
     {
        POLLTime=NORMARLTIME;
     }
-    if(waringspeedflag==1&&sendedflag==1)//ÓĞ¹ı±¨¾¯ ÇÒÒÑ¾­·¢ËÍ»Ö¸´ÂıËÙ
+    if(waringspeedflag==1&&sendedflag==1)//æœ‰è¿‡æŠ¥è­¦ ä¸”å·²ç»å‘é€æ¢å¤æ…¢é€Ÿ
     {
       sendedflag=0;
       waringspeedflag=0;
@@ -326,27 +326,27 @@ void ec20ProcessFun(void)
     }
     
   }
-  if(PollTimeCnt>POLLTime)//0.5ÃëÖ´ĞĞÒ»´Î
+  if(PollTimeCnt>POLLTime)//0.5ç§’æ‰§è¡Œä¸€æ¬¡
   {
     PollTimeCnt=0;
-    //Ó¦´ğ¼ÆÊı  Ê¶±ğ¶ÏÏß
-    if(SendCntRecClear>SendButNoRecCnt)//·¢ËÍ¼ÆÊı  ÊÕµ½ÈÎºÎ¶«Î÷¶¼Çå³ı
+    //åº”ç­”è®¡æ•°  è¯†åˆ«æ–­çº¿
+    if(SendCntRecClear>SendButNoRecCnt)//å‘é€è®¡æ•°  æ”¶åˆ°ä»»ä½•ä¸œè¥¿éƒ½æ¸…é™¤
     {
       ProSta=InitEC2Index;
       SendCntRecClear=0;
       GPSStatFlag=0;
       SendGPSCnt=0;
       CurStaSendCnt=0;
-      ec20power(1);//¸´Î»Ò»ÏÂ
+      ec20power(1);//å¤ä½ä¸€ä¸‹
       linkflag=0;
 #if DEBUGMODE==0      
       OLED_ShowString(0,0,"                  ",16);
       PrintHZ(0,0,"RST ERROR             ",0,1,0);
 #else
-      SendTxDebug((unsigned char *)"EC20·ÇÔ¤ÆÚ´íÎó\0");
+      SendTxDebug((unsigned char *)"EC20éé¢„æœŸé”™è¯¯\0");
 #endif
     }
-    //·¢ËÍ ÓĞ½ÓÊÕ µ«·ÇÔ¤ÆÚµÄ¼ÆÊı Ê¶±ğ¶ÏÏß
+    //å‘é€ æœ‰æ¥æ”¶ ä½†éé¢„æœŸçš„è®¡æ•° è¯†åˆ«æ–­çº¿
     if(CurStaSendCnt>SendRecButNotExpCnt&&ProSta!=ATCodeLastNum)
     {
       ProSta=InitEC2Index;
@@ -357,25 +357,25 @@ void ec20ProcessFun(void)
       OLED_ShowString(0,0,"                  ",16);
       PrintHZ(0,0,"EXP ERROR             ",0,1,0);
 #else
-      SendTxDebug((unsigned char *)"EC20·ÇÔ¤ÆÚ´íÎó\0");
+      SendTxDebug((unsigned char *)"EC20éé¢„æœŸé”™è¯¯\0");
 #endif
     }
     
-    //×îºóÒ»Ìõ·¢ËÍ ÓĞ½ÓÊÕ µ«·ÇÔ¤ÆÚµÄ¼ÆÊı¾İ
+    //æœ€åä¸€æ¡å‘é€ æœ‰æ¥æ”¶ ä½†éé¢„æœŸçš„è®¡æ•°æ®
     if(SendGPSCnt>SendRecButGpsNotExp&&ProSta==ATCodeLastNum)
     {
-      ProSta= InitTCPIndex;//ÖØĞÂ¿ªÊ¼
+      ProSta= InitTCPIndex;//é‡æ–°å¼€å§‹
       CurStaSendCnt=0;
       SendGPSCnt=0;
-      GPSStatFlag=0;//GPSÎ´Õı³£¹¤×÷
+      GPSStatFlag=0;//GPSæœªæ­£å¸¸å·¥ä½œ
     }
     
     if(ProSta<=ATCodeNum)
     {
-      if(rsRecFlag==0)//·¢ËÍ
+      if(rsRecFlag==0)//å‘é€
       {
 
-        if(ProSta==ATCodeSnd)//·¢ËÍµÄÄÇÌõĞÅÏ¢
+        if(ProSta==ATCodeSnd)//å‘é€çš„é‚£æ¡ä¿¡æ¯
         {
           
           DataSendPre();
@@ -388,7 +388,7 @@ void ec20ProcessFun(void)
         
         if(ProSta==ATCodeLastNum)
         {
-          SendGPSCnt++;//¶ÁÈ¡GPS¼ÆÊı
+          SendGPSCnt++;//è¯»å–GPSè®¡æ•°
         }
         SendCntRecClear++;
         sprintf((char *)numstr,"%02d\0",ProSta);
@@ -397,7 +397,7 @@ void ec20ProcessFun(void)
          
 #else
         SendTxDebug((unsigned char *)numstr);
-        if(ProSta==ATCodeSnd)//·¢ËÍµÄÄÇÌõĞÅÏ¢
+        if(ProSta==ATCodeSnd)//å‘é€çš„é‚£æ¡ä¿¡æ¯
         {
           SendTxDebug(sendbuf);
         }else
@@ -411,17 +411,17 @@ void ec20ProcessFun(void)
         {
 #if DEBUGMODE==0
           OLED_ShowString(0,0,"                  ",16);
-          PrintHZ(0,0,"ÕıÔÚÁ¬½Ó               ",0,1,0);
+          PrintHZ(0,0,"æ­£åœ¨è¿æ¥               ",0,1,0);
 #else
-          SendTxDebug((unsigned char *)"ÕıÔÚÁ¬½Ó\0");
+          SendTxDebug((unsigned char *)"æ­£åœ¨è¿æ¥\0");
 #endif
         } 
         
         //togLEDstatus;
-        CurStaSendCnt++;//ÊÕµ½Ô¤ÆÚ»áÇåÁã
+        CurStaSendCnt++;//æ”¶åˆ°é¢„æœŸä¼šæ¸…é›¶
         
         
-      }else//½ÓÊÕÄÚÈİµÄÊ¶±ğ´¦Àí
+      }else//æ¥æ”¶å†…å®¹çš„è¯†åˆ«å¤„ç†
       {
         rsRecFlag=0;
         SendCntRecClear=0;
@@ -442,23 +442,23 @@ void ec20ProcessFun(void)
           OLED_ShowString(0,0,"                  ",16);
           PrintHZ(0,0,"SIM ERROR             ",0,1,0);
 #else
-          SendTxDebug((unsigned char *)"µç»°¿¨ÓĞÎÊÌâ\0");
+          SendTxDebug((unsigned char *)"ç”µè¯å¡æœ‰é—®é¢˜\0");
 #endif
           linkflag=0;
         }
         
-        if(ProSta==12)//TCPÊı¾İ·µ»Ø
+        if(ProSta==12)//TCPæ•°æ®è¿”å›
         {
           linkflag=1;
           if(waringtimeflag)
           {
-              sendedflag=1;//±¨¾¯ÒÑ·¢ËÍ
+              sendedflag=1;//æŠ¥è­¦å·²å‘é€
           }
 #if DEBUGMODE==0
           OLED_ShowString(0,0,"                  ",16);
-          PrintHZ(0,0,"Á¬½Ó³É¹¦              ",0,1,0);
+          PrintHZ(0,0,"è¿æ¥æˆåŠŸ              ",0,1,0);
 #else
-          SendTxDebug((unsigned char *)"Á¬½Ó³É¹¦\0");
+          SendTxDebug((unsigned char *)"è¿æ¥æˆåŠŸ\0");
 #endif
         }
         
@@ -468,10 +468,10 @@ void ec20ProcessFun(void)
            (ProSta==2&&strstr((const char*)rsRxBuf,(const char*)"0,5")!=NULL)||
            (ProSta==11&&strstr((const char*)rsRxBuf,(const char*)"recv")!=NULL)||
            (ProSta==11&&strstr((const char*)rsRxBuf,(const char*)",0")!=NULL)
-           )//·ûºÏÔ¤ÆÚ  ÔÙ½ÓÊÜµ½µÄ×Ö½ÚÖĞÕÒµ½
+           )//ç¬¦åˆé¢„æœŸ  å†æ¥å—åˆ°çš„å­—èŠ‚ä¸­æ‰¾åˆ°
         {
           
-          if(ProSta==ATTcpReadIndex)//¶ÁÈ¡µ½ÁËTCP·µ»ØÖµ
+          if(ProSta==ATTcpReadIndex)//è¯»å–åˆ°äº†TCPè¿”å›å€¼
           {
             
             if(findStrCmp((unsigned char*)&rsRxBuf[20],20,(unsigned char*)"ALARM",5)!=0)
@@ -485,7 +485,7 @@ void ec20ProcessFun(void)
             }
             for(i=0;i<rsRxLen;i++)
             {
-              if(rsRxBuf[i]<'9'&&rsRxBuf[i]>'0')//²éµÚÒ»¸öÊı×Ö
+              if(rsRxBuf[i]<'9'&&rsRxBuf[i]>'0')//æŸ¥ç¬¬ä¸€ä¸ªæ•°å­—
               {
                 break;
               }
@@ -509,14 +509,14 @@ void ec20ProcessFun(void)
             }
           }
 #if 0
-          if(ProSta==ATCodeLastNum)//gpsµÄ¶ÁÈ¡  ²¢ÇÒ QGPSLOC¶ÁÈ¡ÕıÈ·
+          if(ProSta==ATCodeLastNum)//gpsçš„è¯»å–  å¹¶ä¸” QGPSLOCè¯»å–æ­£ç¡®
           {
-            SendGPSCnt=0;//ÊÕµ½gpsÔ¤ÆÚÇåÁã
-            GPSStatFlag=1;//gpsÔËĞĞ×´Ì¬Õı³£
+            SendGPSCnt=0;//æ”¶åˆ°gpsé¢„æœŸæ¸…é›¶
+            GPSStatFlag=1;//gpsè¿è¡ŒçŠ¶æ€æ­£å¸¸
             pec20=&ec20send;
             for(i=0;i<rsRxLen;i++)
             {
-              if(rsRxBuf[i]<'9'&&rsRxBuf[i]>'0')//²éµÚÒ»¸öÊı×Ö
+              if(rsRxBuf[i]<'9'&&rsRxBuf[i]>'0')//æŸ¥ç¬¬ä¸€ä¸ªæ•°å­—
               {
                 break;
               }
@@ -524,16 +524,16 @@ void ec20ProcessFun(void)
             memcpy((char *)&(pec20->Time[0]),&rsRxBuf[i],10);
             for(;i<rsRxLen;i++)
             {
-              if(rsRxBuf[i]==',')//²éµÚÒ»¸öÊı×Ö
+              if(rsRxBuf[i]==',')//æŸ¥ç¬¬ä¸€ä¸ªæ•°å­—
               {
                 break;
               }
             }
             memcpy((char *)&(pec20->Latitude[0]),&rsRxBuf[i+1],10);
-            i++;//Ìø¹ıÉÏÒ»¸ö¶ººÅ
+            i++;//è·³è¿‡ä¸Šä¸€ä¸ªé€—å·
             for(;i<rsRxLen;i++)
             {
-              if(rsRxBuf[i]==',')//²éµÚÒ»¸öÊı×Ö
+              if(rsRxBuf[i]==',')//æŸ¥ç¬¬ä¸€ä¸ªæ•°å­—
               {
                 break;
               }
@@ -542,37 +542,37 @@ void ec20ProcessFun(void)
             GpsRecFlag=1;
           }
 #endif
-          GpsRecFlag=1;//·ÅÆú¾­Î³¶ÈµÄÊ¶±ğ
-          if(ProSta==11)//·¢ËÍ³É¹¦Ôò
+          GpsRecFlag=1;//æ”¾å¼ƒç»çº¬åº¦çš„è¯†åˆ«
+          if(ProSta==11)//å‘é€æˆåŠŸåˆ™
           {
             linkflagSta=1;
             SendGPSCnt=0;
           }
           
-          ProSta++;//·ûºÏÔ¤ÆÚÍùÏÂ×ß
-          CurStaSendCnt=0;//ÊÕµ½Ô¤ÆÚÇåÁã
+          ProSta++;//ç¬¦åˆé¢„æœŸå¾€ä¸‹èµ°
+          CurStaSendCnt=0;//æ”¶åˆ°é¢„æœŸæ¸…é›¶
         }else
         {
-          if(ProSta==11)//·¢ËÍ²»³É¹¦
+          if(ProSta==11)//å‘é€ä¸æˆåŠŸ
           {
             linkflagSta=0;
-            ProSta=6;//·¢¶¼Ã»·¢³É¹¦¾Í±ğ½ÓÊÕÁË Ö±½ÓÖØĞÂ¿ªÊ¼
+            ProSta=6;//å‘éƒ½æ²¡å‘æˆåŠŸå°±åˆ«æ¥æ”¶äº† ç›´æ¥é‡æ–°å¼€å§‹
           }
         }
         Clear_Buffer();
       }
-    }else//Õı³£×ßÍêÕû¸öÁ÷³Ì ´ÓµÚ¾Å²½[¹Ø±ÕTCPÁ¬½ÓÕâ²½ÖØĞÂÖ´ĞĞ]¿ªÊ¼
+    }else//æ­£å¸¸èµ°å®Œæ•´ä¸ªæµç¨‹ ä»ç¬¬ä¹æ­¥[å…³é—­TCPè¿æ¥è¿™æ­¥é‡æ–°æ‰§è¡Œ]å¼€å§‹
     {
       
       
       if(linkflagSta)
       {
-        ProSta= 11;//ÖØĞÂ·¢ËÍ
+        ProSta= 11;//é‡æ–°å‘é€
       }else
       {
         ProSta=6;
       }
-      sendingflag=0;//Î´·¢ËÍ
+      sendingflag=0;//æœªå‘é€
     }
   }
 }
@@ -582,7 +582,7 @@ void ec20ProcessFun(void)
 
 
 
-//·ÅÔÚwhile(1)×ÜµÄº¯Êı=EC20+RADAR
+//æ”¾åœ¨while(1)æ€»çš„å‡½æ•°=EC20+RADAR
 void PollFun(void)
 {
   
@@ -590,10 +590,10 @@ void PollFun(void)
   
   if(initflag==0)
   {
-    initflag=1;//ÕâÀï·ÅÒ»Ğ©³õÊ¼»¯º¯Êı
+    initflag=1;//è¿™é‡Œæ”¾ä¸€äº›åˆå§‹åŒ–å‡½æ•°
     ec20power(1);
     u1Conf();//RS232
-    u2Conf();//EC20  ATÖ¸Áî
+    u2Conf();//EC20  ATæŒ‡ä»¤
     u3Conf();//Radar
 #if DEBUGMODE==0
     OLED_Init();
@@ -602,7 +602,7 @@ void PollFun(void)
     delay_ms(1000);
     OLED_CLS();
 #else
-    SendTxDebug((unsigned char *)"³õÊ¼»¯Íê³É\0");
+    SendTxDebug((unsigned char *)"åˆå§‹åŒ–å®Œæˆ\0");
 #endif
     lifetime_count[0] = 0;
     lifetime_count[1] = 0;
@@ -617,7 +617,7 @@ void PollFun(void)
   
   ec20ProcessFun();
   
-#if FacSend==1  //ÕâÀï²âÊÔ
+#if FacSend==1  //è¿™é‡Œæµ‹è¯•
   if(simCnt>10000)
   {
     ready_2_warning = 1; 
@@ -629,7 +629,7 @@ void PollFun(void)
     if(linkflag==1&&sendingflag==0)
     {
       sendingflag=1;
-      ProSta=11;//Á¢Âí×¼±¸·¢ËÍ
+      ProSta=11;//ç«‹é©¬å‡†å¤‡å‘é€
     }
   }
   
@@ -647,7 +647,7 @@ void PollFun(void)
   
 #endif
   
-  //ÉÏ´Î1Õâ´Î0
+  //ä¸Šæ¬¡1è¿™æ¬¡0
   if(readsxtioflag==GPIO_PIN_SET&&readSXTwarm==GPIO_PIN_RESET)
   {
     ready_2_warning=1;
@@ -662,10 +662,10 @@ void PollFun(void)
     danger_keep = 10;
     ready_2_warning = 0;
     
-    if(linkflag==1&&sendingflag==0)//ÒÑÁ¬½Ó Î´·¢ËÍ
+    if(linkflag==1&&sendingflag==0)//å·²è¿æ¥ æœªå‘é€
     {
       sendingflag=1;
-      ProSta=11;//Á¢Âí×¼±¸·¢ËÍ
+      ProSta=11;//ç«‹é©¬å‡†å¤‡å‘é€
       
       PollTimeCnt=POLLTime+1;
 
@@ -675,7 +675,7 @@ void PollFun(void)
 #if DEBUGMODE==0
       OLED_ShowString(0,0,"RADAR[1]DANGER!!",16);
 #else
-      SendTxDebug((unsigned char *)"À×´ï1±¨¾¯\0");
+      SendTxDebug((unsigned char *)"é›·è¾¾1æŠ¥è­¦\0");
 #endif
     }
     else if(warning_ID == 2)
@@ -683,7 +683,7 @@ void PollFun(void)
 #if DEBUGMODE==0
       OLED_ShowString(0,0,"RADAR[2]DANGER!!",16);
 #else
-      SendTxDebug((unsigned char *)"À×´ï2±¨¾¯\0");
+      SendTxDebug((unsigned char *)"é›·è¾¾2æŠ¥è­¦\0");
 #endif
     }
     else if(warning_ID == 3)
@@ -691,7 +691,7 @@ void PollFun(void)
 #if DEBUGMODE==0
       OLED_ShowString(0,0,"RADAR[3]DANGER!!",16);
 #else
-      SendTxDebug((unsigned char *)"À×´ï3±¨¾¯\0");
+      SendTxDebug((unsigned char *)"é›·è¾¾3æŠ¥è­¦\0");
 #endif
     }
     else if(warning_ID == 4)
@@ -699,7 +699,7 @@ void PollFun(void)
 #if DEBUGMODE==0
     OLED_ShowString(0,0,"RADAR[4]DANGER!!",16);
 #else
-    SendTxDebug((unsigned char *)"À×´ï4±¨¾¯\0");
+    SendTxDebug((unsigned char *)"é›·è¾¾4æŠ¥è­¦\0");
 #endif
     }
     
@@ -711,7 +711,7 @@ void PollFun(void)
         waringspeedflag=1;
         warmonceflag=1;
         POLLTime=ALARMTIME;
-        WarmHig;//±¨¾¯  ±¨¾¯Ã»ÓĞ±»½ûÓÃ
+        WarmHig;//æŠ¥è­¦  æŠ¥è­¦æ²¡æœ‰è¢«ç¦ç”¨
       }
     }
   }
@@ -719,12 +719,12 @@ void PollFun(void)
   {
     WarmLow;
 #if DEBUGMODE==0
-    SendTxDebug((unsigned char *)"ÒÑ±¨¾¯\0");
+    SendTxDebug((unsigned char *)"å·²æŠ¥è­¦\0");
 #else
-    SendTxDebug((unsigned char *)"ÒÑ±¨¾¯\0");
+    SendTxDebug((unsigned char *)"å·²æŠ¥è­¦\0");
 #endif
     waringtimeflag=0;
-    sendingflag=0;//Î´·¢ËÍ 20220527
+    sendingflag=0;//æœªå‘é€ 20220527
     waringtime=0;
     warmSend[0]=0;
     warmSend[1]=0;
@@ -732,13 +732,13 @@ void PollFun(void)
     warmSend[3]=0;
   }
   
-  if(ms10 >= 6000)//6Ãë
+  if(ms10 >= 6000)//6ç§’
   {
     ms10 = 0;
     for(int i = 0;i<4;i++)
     {
       lifetime_count[i] ++;
-      if(lifetime_count[i] > 10)//1·ÖÖÓ
+      if(lifetime_count[i] > 10)//1åˆ†é’Ÿ
       {
         //warmSend[i]=0;
         //printf("radar[%d] offline",i+1);
@@ -751,7 +751,7 @@ void PollFun(void)
 #if DEBUGMODE==0
       OLED_Clear();
 #else
-      SendTxDebug((unsigned char *)"Çå³ıÆÁÄ»\0");
+      SendTxDebug((unsigned char *)"æ¸…é™¤å±å¹•\0");
 #endif
       WarmLow;
     }
